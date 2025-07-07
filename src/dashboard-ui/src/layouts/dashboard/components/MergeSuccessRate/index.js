@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Card } from '@mui/material';
 import VuiBox from 'components/VuiBox';
 import VuiTypography from 'components/VuiTypography';
@@ -22,7 +21,6 @@ const SatisfactionRate = ({ rate = 0 }) => {
           From merged PRs
         </VuiTypography>
 
-        {/* 도넛 그래프 */}
         <VuiBox sx={{ alignSelf: 'center', justifySelf: 'center', zIndex: '-1' }}>
           <VuiBox sx={{ position: 'relative', display: 'inline-flex' }}>
             <CircularProgress
@@ -61,7 +59,6 @@ const SatisfactionRate = ({ rate = 0 }) => {
           </VuiBox>
         </VuiBox>
 
-        {/* 수치 표시 */}
         <VuiBox
           sx={({ breakpoints }) => ({
             width: '90%',

@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 
-// Vision UI Dashboard React components
+// Vision UI components
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
 import colors from "assets/theme/base/colors";
@@ -17,7 +17,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
     <Card sx={{ padding: "16px" }}>
       <VuiBox>
         <Grid container alignItems="center">
-          {/* 왼쪽 아이콘 */}
           {direction === "left" && (
             <Grid item>
               <VuiBox
@@ -36,7 +35,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
             </Grid>
           )}
 
-          {/* 텍스트 및 숫자 */}
           <Grid item xs={8}>
             <VuiBox
               ml={direction === "left" ? 2 : 0}
@@ -44,7 +42,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
               justifyContent="space-between"
               alignItems="center"
             >
-              {/* 제목 */}
               <VuiTypography
                 variant="caption"
                 color={bgColor === "white" ? "text" : "white"}
@@ -55,7 +52,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                 {title.text}
               </VuiTypography>
 
-              {/* 숫자 + 증감률 */}
               <VuiBox display="flex" alignItems="baseline">
                 <VuiTypography variant="h5" fontWeight="bold" color="white" mr="6px">
                   {count}
@@ -71,7 +67,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
             </VuiBox>
           </Grid>
 
-          {/* 오른쪽 아이콘 */}
           {direction === "right" && (
             <Grid item xs={4}>
               <VuiBox
@@ -98,7 +93,6 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
   );
 }
 
-// Default props
 MiniStatisticsCard.defaultProps = {
   bgColor: "white",
   title: {
@@ -112,7 +106,6 @@ MiniStatisticsCard.defaultProps = {
   direction: "right",
 };
 
-// Prop types
 MiniStatisticsCard.propTypes = {
   bgColor: PropTypes.oneOf([
     "white",

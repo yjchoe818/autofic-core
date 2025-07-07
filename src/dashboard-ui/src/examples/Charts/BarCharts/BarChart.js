@@ -10,7 +10,6 @@ function BarChart({ barChartData, barChartOptions }) {
     setChartOptions(barChartOptions);
   }, [barChartData, barChartOptions]);
 
-  // 데이터 유효성 검사
   if (
     !chartData ||
     chartData.length === 0 ||

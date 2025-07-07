@@ -25,7 +25,7 @@ function Footer() {
         <VuiBox display="flex" justifyContent="flex-start"
         flexWrap="wrap"
         gap="36px"
-        pr={{ xs: 0, lg: "60px" }} // 오른쪽 여백 확보
+        pr={{ xs: 0, lg: "60px" }}
         mt={{ xs: 2, lg: 0 }}
         >
           <VuiTypography

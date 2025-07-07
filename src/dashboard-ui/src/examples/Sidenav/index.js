@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
-// MUI
+// MUI components
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
@@ -19,56 +19,72 @@ import VuiButton from "components/VuiButton";
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import SidenavCard from "examples/Sidenav/SidenavCard";
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
-import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
 // Context
 import { useVisionUIController, setMiniSidenav, setTransparentSidenav } from "context";
 
-// 로고 이미지 추가
+// Logo
 import logoImage from "assets/images/autofic-logo.png";
 
 function Sidenav({ color, brandName, routes, ...rest }) {
   const [controller, dispatch] = useVisionUIController();
   const { miniSidenav, transparentSidenav } = controller;
-  const location = useLocation();
-  const { pathname } = location;
-  const collapseName = pathname.split("/").slice(1)[0];
+  const { pathname } = useLocation();
+  const collapseName = pathname.split("/")[1];
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
   useEffect(() => {
-    function handleMiniSidenav() {
+    function handleResize() {
       setMiniSidenav(dispatch, window.innerWidth < 1200);
     }
-    window.addEventListener("resize", handleMiniSidenav);
-    handleMiniSidenav();
-    return () => window.removeEventListener("resize", handleMiniSidenav);
-  }, [dispatch, location]);
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, [dispatch]);
 
   useEffect(() => {
     if (window.innerWidth < 1440) {
       setTransparentSidenav(dispatch, false);
     }
-  }, []);
+  }, [dispatch]);
 
   const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, route, href }) => {
-    let returnValue;
     if (type === "collapse") {
-      returnValue = href ? (
-        <Link href={href} key={key} target="_blank" rel="noreferrer" sx={{ textDecoration: "none" }}>
-          <SidenavCollapse color={color} name={name} icon={icon} active={key === collapseName} noCollapse={noCollapse} />
+      return href ? (
+        <Link
+          href={href}
+          key={key}
+          target="_blank"
+          rel="noreferrer"
+          sx={{ textDecoration: "none" }}
+        >
+          <SidenavCollapse
+            color={color}
+            name={name}
+            icon={icon}
+            active={key === collapseName}
+            noCollapse={noCollapse}
+          />
         </Link>
       ) : (
         <NavLink to={route} key={key}>
-          <SidenavCollapse color={color} key={key} name={name} icon={icon} active={key === collapseName} noCollapse={noCollapse} />
+          <SidenavCollapse
+            color={color}
+            name={name}
+            icon={icon}
+            active={key === collapseName}
+            noCollapse={noCollapse}
+          />
         </NavLink>
       );
-    } else if (type === "title") {
-      returnValue = (
+    }
+
+    if (type === "title") {
+      return (
         <VuiTypography
           key={key}
           color="white"
-          display="block"
           variant="caption"
           fontWeight="bold"
           textTransform="uppercase"
@@ -80,11 +96,13 @@ function Sidenav({ color, brandName, routes, ...rest }) {
           {title}
         </VuiTypography>
       );
-    } else if (type === "divider") {
-      returnValue = <Divider light key={key} />;
     }
 
-    return returnValue;
+    if (type === "divider") {
+      return <Divider light key={key} />;
+    }
+
+    return null;
   });
 
   return (
@@ -117,7 +135,6 @@ function Sidenav({ color, brandName, routes, ...rest }) {
                 mr: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : 1,
               }}
             >
-              {/* 로고 이미지로 교체 */}
               <img
                 src={logoImage}
                 alt="AutoFic Logo"
@@ -126,7 +143,7 @@ function Sidenav({ color, brandName, routes, ...rest }) {
             </VuiBox>
             <VuiTypography
               variant="h4"
-              textGradient={true}
+              textGradient
               color="logo"
               fontSize={26}
               letterSpacing={0.5}
@@ -141,22 +158,18 @@ function Sidenav({ color, brandName, routes, ...rest }) {
           </VuiBox>
         </VuiBox>
       </VuiBox>
+
       <Divider light />
       <List>{renderRoutes}</List>
+
       <VuiBox
         my={2}
         mx={2}
         mt="auto"
         sx={({ breakpoints }) => ({
-          [breakpoints.up("xl")]: {
-            pt: 2,
-          },
-          [breakpoints.only("xl")]: {
-            pt: 1,
-          },
-          [breakpoints.down("xl")]: {
-            pt: 2,
-          },
+          [breakpoints.up("xl")]: { pt: 2 },
+          [breakpoints.only("xl")]: { pt: 1 },
+          [breakpoints.down("xl")]: { pt: 2 },
         })}
       >
         <SidenavCard color={color} />
@@ -183,7 +196,9 @@ Sidenav.defaultProps = {
 };
 
 Sidenav.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
+  color: PropTypes.oneOf([
+    "primary", "secondary", "info", "success", "warning", "error", "dark",
+  ]),
   brandName: PropTypes.string.isRequired,
   routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
