@@ -9,6 +9,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
+import SatisfactionRate from "layouts/dashboard/components/MergeSuccessRate";
 import linearGradient from "assets/theme/functions/linearGradient";
 import colors from "assets/theme/base/colors";
 
@@ -22,6 +23,7 @@ function Dashboard() {
   const [weeklyChartData, setWeeklyChartData] = useState([]);
   const [dailyChartData, setDailyChartData] = useState([]);
   const [prCount, setPrCount] = useState(null);
+  const [mergeRate, setMergeRate] = useState(0);
 
   const weeklyChartOptions = {
     chart: { type: "area", toolbar: { show: false } },
@@ -66,6 +68,7 @@ function Dashboard() {
       .then((res) => res.json())
       .then((data) => {
         setPrCount(data.prCount);
+        setMergeRate(data.mergeApprovalRate);
 
         setWeeklyChartData([
           {
@@ -90,44 +93,33 @@ function Dashboard() {
     <DashboardLayout>
       <DashboardNavbar />
       <VuiBox py={3}>
-        {/* PR 통계 카드 3개 */}
         <VuiBox mb={3}>
           <Grid container spacing={3}>
             {[
-              {
-                title: "Total PRs",
-                count: prCount.total,
-                icon: <span>📦</span>,
-              },
-              {
-                title: "Daily PRs",
-                count: prCount.daily,
-                icon: <span>📅</span>,
-              },
-              {
-                title: "Weekly PRs",
-                count: prCount.weekly,
-                icon: <span>📈</span>,
-              },
+              { title: "Total PRs", count: prCount.total, icon: <span>📦</span> },
+              { title: "Daily PRs", count: prCount.daily, icon: <span>📅</span> },
+              { title: "Weekly PRs", count: prCount.weekly, icon: <span>📈</span> },
             ].map((item, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card sx={{ height: "100%", minHeight: "110px" }}>
-                  <MiniStatisticsCard
-                    title={{ text: item.title }}
-                    count={item.count}
-                    percentage={{ color: "success", text: "+0%" }}
-                    icon={{ color: "info", component: item.icon }}
-                  />
-                </Card>
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <MiniStatisticsCard
+                  title={{ text: item.title }}
+                  count={item.count}
+                  percentage={{ color: "success", text: "+0%" }}
+                  icon={{ color: "info", component: item.icon }}
+                />
               </Grid>
             ))}
           </Grid>
+
+          <Grid container spacing={3} sx={{ mt: 1 }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <SatisfactionRate rate={mergeRate} />
+            </Grid>
+          </Grid>
         </VuiBox>
 
-        {/* 그래프 2개 */}
         <VuiBox mb={3}>
           <Grid container spacing={3}>
-            {/* LineChart - Weekly */}
             <Grid item xs={12} md={7}>
               <Card sx={{ padding: "24px", height: "100%", minHeight: "300px" }}>
                 <VuiTypography variant="lg" color="white" fontWeight="bold" mb="5px">
@@ -148,7 +140,6 @@ function Dashboard() {
               </Card>
             </Grid>
 
-            {/* BarChart - Daily */}
             <Grid item xs={12} md={5}>
               <Card sx={{ padding: "24px", height: "100%", minHeight: "300px" }}>
                 <VuiTypography variant="lg" color="white" fontWeight="bold" mb="5px">
@@ -160,7 +151,6 @@ function Dashboard() {
                     compared to yesterday
                   </VuiTypography>
                 </VuiTypography>
-
                 <VuiBox
                   sx={{
                     height: "220px",
@@ -180,7 +170,6 @@ function Dashboard() {
                 </VuiBox>
               </Card>
             </Grid>
-
           </Grid>
         </VuiBox>
       </VuiBox>

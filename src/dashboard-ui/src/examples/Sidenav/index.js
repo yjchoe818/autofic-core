@@ -121,16 +121,15 @@ function Sidenav({ color, brandName, routes, ...rest }) {
               <img
                 src={logoImage}
                 alt="AutoFic Logo"
-                style={{ width: "40px", height: "40px" }}
+                style={{ width: "60px", height: "60px" }}
               />
             </VuiBox>
             <VuiTypography
-              variant="button"
+              variant="h4"
               textGradient={true}
               color="logo"
-              fontSize={20}
+              fontSize={26}
               letterSpacing={0.5}
-              fontWeight="bold"
               sx={{
                 opacity: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : 1,
                 maxWidth: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : "100%",
@@ -171,7 +170,7 @@ function Sidenav({ color, brandName, routes, ...rest }) {
             color={color}
             fullWidth
           >
-            Upgrade to PRO
+            Learn More About AutoFic
           </VuiButton>
         </VuiBox>
       </VuiBox>

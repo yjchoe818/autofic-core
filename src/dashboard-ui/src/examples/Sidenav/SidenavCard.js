@@ -55,11 +55,11 @@ function SidenavCard({ color, ...rest }) {
         </VuiBox>
         <VuiBox lineHeight={1}>
           <VuiTypography variant="h6" color="white">
-            About AutoFic
+            What is AutoFic?
           </VuiTypography>
           <VuiBox mb={1.825} mt={-1}>
             <VuiTypography variant="caption" color="white" fontWeight="regular">
-              Please check our github
+              View on GitHub
             </VuiTypography>
           </VuiBox>
           <VuiButton
