@@ -62,7 +62,7 @@ const routes = [
     icon: <IoStatsChart size="15px" color="inherit" />,
     component: Tables,
     noCollapse: true,
-  },
+  }
 ];
 
 export default routes;

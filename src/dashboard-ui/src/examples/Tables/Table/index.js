@@ -122,7 +122,7 @@ function Table({ columns, rows }) {
             <VuiTypography
               variant="button"
               fontWeight="regular"
-              color="text"
+              color="white"
               sx={{ display: "inline-block", width: "max-content" }}
             >
               {row[name]}
