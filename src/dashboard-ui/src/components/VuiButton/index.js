@@ -29,7 +29,7 @@ const VuiButton = forwardRef(
     <VuiButtonRoot
       {...rest}
       ref={ref}
-      color="white"
+      color={color}
       variant={variant === "gradient" ? "contained" : variant}
       size={size}
       ownerState={{ color, variant, size, circular, iconOnly }}
@@ -62,7 +62,7 @@ VuiButton.propTypes = {
     "error",
     "light",
     "dark",
-    "text",
+    "text"
   ]),
   circular: PropTypes.bool,
   iconOnly: PropTypes.bool,

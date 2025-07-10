@@ -44,4 +44,14 @@ export default {
   "a.link:hover, .link:hover, a.link:focus, .link:focus": {
     color: `${info.main} !important`,
   },
+  ".custom-dropdown .MuiPaper-root": {
+  backgroundColor: "#1e293b",
+  color: "#ffffff",     
+  borderRadius: "12px",
+  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.3)",
+},
+
+".custom-dropdown .MuiMenuItem-root:hover": {
+  backgroundColor: "#334155",
+},
 };

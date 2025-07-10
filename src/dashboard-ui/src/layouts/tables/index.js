@@ -162,7 +162,7 @@ function Tables() {
                     setCurrentPage(1);
                   }}
                   options={rerunOptions}
-                  color="info"
+                  color="primary"
                 />
               </VuiBox>
             </VuiBox>
