@@ -44,8 +44,8 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
             >
               <VuiTypography
                 variant="caption"
-                color={bgColor === "white" ? "text" : "white"}
-                opacity={bgColor === "white" ? 1 : 0.7}
+                color="white"
+                opacity={1}
                 textTransform="capitalize"
                 fontWeight={title.fontWeight}
               >
