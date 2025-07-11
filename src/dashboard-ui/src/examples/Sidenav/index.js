@@ -182,6 +182,18 @@ function Sidenav({ color, brandName, routes, ...rest }) {
             variant="gradient"
             color={color}
             fullWidth
+            sx={{
+            background: "linear-gradient(90deg, #5f4dee, #7f59e0, #996cfb) !important",
+            color: "#fff !important",
+            fontWeight: "bold",
+            fontSize: "14px",
+            padding: "12px",
+            textTransform: "none",
+            boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.3)",
+            "&:hover": {
+              background: "linear-gradient(90deg,rgb(87, 68, 236),rgb(108, 70, 206), #996cfb)",
+            },
+          }}
           >
             Learn More About AutoFic
           </VuiButton>

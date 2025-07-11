@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-
-// MUI & Vision UI Components
 import Card from "@mui/material/Card";
 import VuiBox from "components/VuiBox";
 import VuiTypography from "components/VuiTypography";
-import VuiButton from "components/VuiButton";
-
-// Layout & Table
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
+import VuiPagination from "components/VuiPagination";
+import SortButtons from "layouts/tables/components/SortButtons";
+import FilterDropdown from "layouts/tables/components/FilterDropdown";
 
 function Tables() {
   const [repoColumns, setRepoColumns] = useState([]);
@@ -19,7 +17,10 @@ function Tables() {
   const rowsPerPage = 5;
 
   const [sortKey, setSortKey] = useState(null);
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState("desc");
+
+  const [selectedTool, setSelectedTool] = useState("All");
+  const [selectedRerun, setSelectedRerun] = useState("All");
 
   useEffect(() => {
     fetch(`${process.env.PUBLIC_URL}/dashboard_data.json`)
@@ -54,19 +55,25 @@ function Tables() {
           }))
         );
       })
-      .catch((err) => console.error("dashboard_data.json 로딩 실패:", err));
+      .catch((err) => console.error("dashboard_data.json 로드 실패:", err));
   }, []);
 
   const handleSort = (key) => {
     if (sortKey === key) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+      setSortOrder(sortOrder === "desc" ? "asc" : "desc");
     } else {
       setSortKey(key);
-      setSortOrder("asc");
+      setSortOrder("desc");
     }
   };
 
-  const sortedRows = [...repoRows].sort((a, b) => {
+  const filteredRows = repoRows.filter((row) => {
+    const matchTool = selectedTool === "All" || row.sastTool === selectedTool;
+    const matchRerun = selectedRerun === "All" || row.rerun === selectedRerun;
+    return matchTool && matchRerun;
+  });
+
+  const sortedRows = [...filteredRows].sort((a, b) => {
     if (!sortKey) return 0;
     const valA = Number(a[sortKey]);
     const valB = Number(b[sortKey]);
@@ -78,31 +85,65 @@ function Tables() {
     currentPage * rowsPerPage
   );
 
-  const totalPages = Math.ceil(repoRows.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <VuiBox py={3}>
         <VuiBox mb={3}>
-          <Card>
-            <VuiBox display="flex" justifyContent="space-between" alignItems="center" px={3} py={2}>
+          <Card
+            sx={{
+              background: "linear-gradient(135deg, #0f1123, #1a1d40, #3d55cc) !important",
+              borderRadius: "20px !important",
+              padding: "24px !important",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.3) !important",
+              overflow: "hidden !important",
+            }}
+          >
+            {/* 타이틀 */}
+            <VuiBox
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              px={3}
+              py={2}
+              sx={{ backgroundColor: "transparent !important" }}
+            >
               <VuiTypography variant="lg" color="white">
                 Repositories Table
               </VuiTypography>
             </VuiBox>
 
-            <VuiBox display="flex" gap={2} flexWrap="wrap" px={3}>
-              <VuiButton color="info" size="small" onClick={() => handleSort("vulnerabilities")}>
-                Sort by Vulnerabilities{sortKey === "vulnerabilities" ? ` (${sortOrder})` : ""}
-              </VuiButton>
-              <VuiButton color="primary" size="small" onClick={() => handleSort("changes")}>
-                Sort by Changes{sortKey === "changes" ? ` (${sortOrder})` : ""}
-              </VuiButton>
+            {/* 정렬 및 필터 */}
+            <VuiBox
+              display="flex"
+              gap={2}
+              flexWrap="wrap"
+              px={3}
+              py={1}
+              sx={{ backgroundColor: "transparent !important" }}
+            >
+              <SortButtons handleSort={handleSort} sortKey={sortKey} sortOrder={sortOrder} />
+              <FilterDropdown
+                label="SAST Tool"
+                value={selectedTool}
+                options={["All", "Semgrep", "CodeQL", "Snyk Code", "ESLint"]}
+                onChange={(e) => setSelectedTool(e.target.value)}
+              
+              />
+              <FilterDropdown
+                label="Rerun"
+                value={selectedRerun}
+                options={["All", "Yes", "No"]}
+                onChange={(e) => setSelectedRerun(e.target.value)}
+              />
             </VuiBox>
 
+            {/* 테이블 */}
             <VuiBox
               sx={{
+                backgroundColor: "transparent !important",
                 "& th": {
                   borderBottom: ({ borders: { borderWidth }, palette: { grey } }) =>
                     `${borderWidth[1]} solid ${grey[700]}`,
@@ -116,20 +157,12 @@ function Tables() {
               <Table columns={repoColumns} rows={paginatedRows} />
             </VuiBox>
 
-            <VuiBox display="flex" justifyContent="center" mt={2} pb={2} gap={1}>
-              {Array.from({ length: totalPages }, (_, i) => (
-                <VuiButton
-                  key={i}
-                  variant={i + 1 === currentPage ? "contained" : "gradient"}
-                  color={i + 1 === currentPage ? "info" : "dark"}
-                  size="small"
-                  onClick={() => setCurrentPage(i + 1)}
-                  sx={{ minWidth: "36px", height: "36px", padding: "0" }}
-                >
-                  {i + 1}
-                </VuiButton>
-              ))}
-            </VuiBox>
+            {/* 페이지네이션 */}
+            <VuiPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </Card>
         </VuiBox>
       </VuiBox>

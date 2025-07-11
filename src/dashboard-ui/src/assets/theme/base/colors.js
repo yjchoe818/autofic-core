@@ -437,4 +437,10 @@ export default {
   tabs: {
     indicator: { boxShadow: "#ddd" },
   },
+
+  customHeader: {
+  deg: "135deg",
+  main: "#1f254f",
+  state: "#141d42",
+  },
 };
