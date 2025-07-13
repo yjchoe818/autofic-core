@@ -18,23 +18,26 @@ SAVE_DIR_OPTION = click.option(
     help = '저장할 디렉토리 경로'
 )
 
-SAST_OPTION = click.option(
+SAST_TOOL_CHOICES = ['semgrep', 'codeql', 'eslint', 'snykcode']
+SAST_TOOL_OPTION = click.option(
     '--sast',
-    is_flag = True,
-    help = 'SAST 분석 수행 여부'
-)
-
-RULE_OPTION = click.option(
-    '--rule',
-    default = "p/default",
+    type=click.Choice(SAST_TOOL_CHOICES, case_sensitive=False),
+    default='semgrep',
     show_default=True,
-    help='SAST 시 사용할 Semgrep 룰'
+    help='사용할 SAST 도구 선택'
 )
 
 LLM_OPTION = click.option(
     '--llm',
     is_flag = True,
     help = 'LLM 응답 생성 및 코드 수정 수행 여부'
+)
+
+LLM_RETRY_OPTION = click.option(
+    '--llm-retry',
+    is_flag=True,
+    default=False,
+    help='수정된 코드에 대해 LLM 재실행을 수행합니다.'
 )
 
 PR_OPTION = click.option(
@@ -53,12 +56,16 @@ def common_options(func):
     return func
 
 def sast_options(func):
-    for option in reversed([SAST_OPTION, RULE_OPTION]):
+    for option in reversed([SAST_TOOL_OPTION]):
         func = option(func)
     return func
 
 def llm_option(func):
     func = LLM_OPTION(func)
+    return func
+
+def llm_retry_option(func):
+    func = LLM_RETRY_OPTION(func)
     return func
 
 def pr_option(func):
